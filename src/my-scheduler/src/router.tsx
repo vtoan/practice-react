@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import NotFoundPage from './pages/errors/not-found';
-import MainLayout from './layout/main-layout';
-import TaskPage from './pages/task/tasks';
-import UserPage from './pages/user/users';
-import SchedulerPage from './pages/scheduler/schedulers';
+import NotFoundPage from './pages/errors/NotFound';
+import MainLayout from './layout/MainLayout';
+import TaskPage from './pages/task/Tasks';
+import UserPage from './pages/user/Users';
+import SchedulerPage from './pages/scheduler/Schedulers';
 
 export const browserRouter = createBrowserRouter([
   {

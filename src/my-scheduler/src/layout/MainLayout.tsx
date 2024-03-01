@@ -1,7 +1,7 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
-import AppBreadcrumb from '../components/app-breadcrumb';
-import Sidebar from '../components/sidebar';
+import AppBreadcrumb from '../components/AppBreadcrumb';
+import Sidebar from '../components/Sidebar';
 
 export default function MainLayout() {
   return (

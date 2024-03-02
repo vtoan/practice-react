@@ -1,9 +1,9 @@
 import { Table } from 'react-bootstrap';
-import { useTasksApi } from '../../apis/task.api';
-import ContentLayout from '../../components/ContentLayout';
+import { useTasksApi } from '../../apis/tasks.api';
+import ContentLayout from '../../layout/ContentLayout';
 
 export default function TaskPage() {
-  const { isError, isLoading, data } = useTasksApi();
+  const { data, isError, isLoading } = useTasksApi();
 
   return (
     <ContentLayout

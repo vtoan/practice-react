@@ -1,46 +1,43 @@
-import { ReactNode, useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-export function useModalLayout(options: {
-  openAsDefault: boolean;
-  onClose: (result: boolean) => void;
-}) {
-  const [isShow, setIsShow] = useState(options.openAsDefault);
+export type UseModalReturn = {
+  attach: () => ModalProps;
+  close: (value?: any) => void;
+  show: () => void;
+};
 
-  const handleClose = () => {
+export function useModalLayout(options: { onClosed: (result: any) => void }) {
+  const [isShow, setIsShow] = useState(false);
+  const handleShow = () => setIsShow(true);
+  const handleClose = (value: any = false) => {
     setIsShow(false);
-    options.onClose(false);
-  };
-  const handleShow = () => {
-    setIsShow(true);
-    options.onClose(true);
+    options.onClosed(value);
   };
 
   const attach = () => {
-    return { isShow, handleClose, handleShow };
+    return { isShow, handleClose } as ModalProps;
   };
-  return { attach, close: handleClose, show: handleShow };
+  return { attach, close: handleClose, show: handleShow } as UseModalReturn;
 }
 
-type Props = {
+type ModalProps = PropsWithChildren<{
   isShow: boolean;
-  handleClose: () => void;
-  handleShow: () => void;
-  children?: ReactNode;
-};
+  handleClose: (value?: any) => void;
+}>;
 
-export function ModalLayout(props: Readonly<Props>) {
+export function ModalLayout(props: ModalProps) {
   return (
-    <Modal show={props.isShow} onHide={props.handleClose}>
+    <Modal show={props.isShow} onHide={() => props.handleClose(false)}>
       <Modal.Header closeButton>
         <Modal.Title>New Task</Modal.Title>
       </Modal.Header>
       <Modal.Body>{props.children}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
+        <Button variant="secondary" onClick={() => props.handleClose(false)}>
           Close
         </Button>
-        <Button variant="primary" onClick={props.handleClose}>
+        <Button variant="primary" onClick={() => props.handleClose(true)}>
           Submit
         </Button>
       </Modal.Footer>

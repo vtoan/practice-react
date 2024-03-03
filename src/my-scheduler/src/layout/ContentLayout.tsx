@@ -1,24 +1,14 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 import Loading from '../components/Loading';
 
-type Props = {
-  children: ReactNode;
+type Props = PropsWithChildren & {
   isLoading?: boolean;
   isError?: boolean;
   errorMessage?: string;
 };
 
-export default function ContentLayout({
-  isLoading,
-  children,
-  isError,
-  errorMessage,
-}: Readonly<Props>) {
-  const loadedContent = isError ? (
-    <p className="text-center py-5"> {errorMessage}</p>
-  ) : (
-    children
-  );
+export default function ContentLayout({ isLoading, children, isError, errorMessage }: Readonly<Props>) {
+  const loadedContent = isError ? <p className="text-center py-5"> {errorMessage}</p> : children;
   return (
     <>
       {isLoading ? (

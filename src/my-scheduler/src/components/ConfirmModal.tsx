@@ -1,13 +1,13 @@
 import { PropsWithChildren, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-export type UseModalReturn = {
-  attach: () => ModalProps;
+export type UseConfirmModalReturn = {
+  attach: () => ConfirmModalProps;
   close: (value?: any) => void;
   show: () => void;
 };
 
-export function useModalLayout(options: { onClosed: (result: any) => void }) {
+export function useConfirmModal(options: { onClosed: (result: any) => void }) {
   const [isShow, setIsShow] = useState(false);
   const handleShow = () => setIsShow(true);
   const handleClose = (value: any = false) => {
@@ -16,17 +16,17 @@ export function useModalLayout(options: { onClosed: (result: any) => void }) {
   };
 
   const attach = () => {
-    return { isShow, handleClose } as ModalProps;
+    return { isShow, handleClose } as ConfirmModalProps;
   };
-  return { attach, close: handleClose, show: handleShow } as UseModalReturn;
+  return { attach, close: handleClose, show: handleShow } as UseConfirmModalReturn;
 }
 
-type ModalProps = PropsWithChildren<{
+type ConfirmModalProps = PropsWithChildren<{
   isShow: boolean;
   handleClose: (value?: any) => void;
 }>;
 
-export function ModalLayout(props: ModalProps) {
+export function ConfirmModal(props: ConfirmModalProps) {
   return (
     <Modal show={props.isShow} onHide={() => props.handleClose(false)}>
       <Modal.Header closeButton>

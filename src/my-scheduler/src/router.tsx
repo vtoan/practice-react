@@ -1,14 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from './pages/errors/NotFound';
-import MainLayout from './layout/MainLayout';
-import TaskPage from './pages/task/Tasks';
+import MainPageLayout from './layout/MainPageLayout';
+import TaskPage from './pages/task/TaskPage';
 import UserPage from './pages/user/Users';
 import SchedulerPage from './pages/scheduler/Schedulers';
 
 export const browserRouter = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: <MainPageLayout />,
     errorElement: <NotFoundPage />,
     children: [
       {

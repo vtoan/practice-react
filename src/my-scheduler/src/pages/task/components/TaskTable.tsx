@@ -1,5 +1,5 @@
 import { Table } from 'react-bootstrap';
-import { TaskItem } from '../../models/task.model';
+import { TaskItem } from '../../../models/task.model';
 
 type Props = {
   data?: TaskItem[];

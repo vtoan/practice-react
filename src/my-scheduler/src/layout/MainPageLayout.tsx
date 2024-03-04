@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import AppBreadcrumb from '../components/AppBreadcrumb';
 import Sidebar from '../components/Sidebar';
 
-export default function MainLayout() {
+export default function MainPageLayout() {
   return (
     <Row className="vh-100 p-0 m-0">
       <Col xs={2} className="bg-light">

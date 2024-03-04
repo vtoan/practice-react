@@ -1,12 +1,12 @@
 import { useTasksApi } from '../../apis/tasks.api';
 import ContentLayout from '../../layout/ContentLayout';
 import { TaskItem } from '../../models/task.model';
-import TaskTable from './TaskTable';
-import AddTaskFormModal, { useAddTaskModal } from './AddTaskForm';
+import TaskTable from './components/TaskTable';
+import AddTaskFormModal, { useAddTaskFormModal } from './components/AddTaskFormModal';
 
 export default function TaskPage() {
   const { data, isError, isLoading } = useTasksApi();
-  const addTaskModal = useAddTaskModal({
+  const [addTaskForm, addTaskModal] = useAddTaskFormModal({
     onClosed: onCreateTask,
   });
 
@@ -18,7 +18,7 @@ export default function TaskPage() {
     <>
       <ContentLayout isLoading={isLoading} isError={isError} errorMessage="No data !!!">
         <div className="d-flex mb-3">
-          <button type="button" className="btn btn-primary me-3" onClick={() => addTaskModal.modalRef.show()}>
+          <button type="button" className="btn btn-primary me-3" onClick={() => addTaskModal.show()}>
             Add Task
           </button>
           <button type="button" className="btn btn-link">
@@ -27,7 +27,7 @@ export default function TaskPage() {
         </div>
         <TaskTable data={data} />
       </ContentLayout>
-      <AddTaskFormModal {...addTaskModal} />
+      <AddTaskFormModal form={addTaskForm} modal={addTaskModal} />
     </>
   );
 }

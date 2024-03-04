@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import httpClient from '../../utils/httpClient';
 
 export interface RequestState<T> {
@@ -12,10 +12,7 @@ type RequestAction<T> = {
   payload?: T;
 };
 
-const requestReducer = <T>(
-  state: RequestState<T>,
-  action: RequestAction<T>
-): RequestState<T> => {
+const requestReducer = <T>(state: RequestState<T>, action: RequestAction<T>): RequestState<T> => {
   switch (action.type) {
     case 'INIT':
       return {
@@ -44,7 +41,8 @@ const requestReducer = <T>(
   }
 };
 
-export function useDataApi<T>(routePath: string): RequestState<T> {
+export function useDataApi<T>(routePath: string): [RequestState<T>, () => void] {
+  const [isRefresh, setIsRefresh] = useState(Date.now());
   const [state, dispatch] = useReducer(requestReducer<T>, {
     isError: false,
     isLoading: false,
@@ -67,7 +65,11 @@ export function useDataApi<T>(routePath: string): RequestState<T> {
     return () => {
       stillAlive = false;
     };
-  }, [routePath]);
+  }, [routePath, isRefresh]);
 
-  return state;
+  function forceRefresh() {
+    setIsRefresh(Date.now());
+  }
+
+  return [state, forceRefresh];
 }

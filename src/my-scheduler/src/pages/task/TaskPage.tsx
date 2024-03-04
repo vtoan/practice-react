@@ -1,17 +1,26 @@
-import { useTasksApi } from '../../apis/tasks.api';
+import { useGetTasksApi } from '../../apis/tasks.api';
 import ContentLayout from '../../layout/ContentLayout';
 import { TaskItem } from '../../models/task.model';
 import TaskTable from './components/TaskTable';
-import AddTaskFormModal, { useAddTaskFormModal } from './components/AddTaskFormModal';
+import AddTaskForm, { useAddTaskFormModal } from './components/AddTaskForm';
+import { ConfirmModal } from '../../components/ConfirmModal';
 
 export default function TaskPage() {
-  const { data, isError, isLoading } = useTasksApi();
+  const { data, isError, isLoading } = useGetTasksApi();
   const [addTaskForm, addTaskModal] = useAddTaskFormModal({
-    onClosed: onCreateTask,
+    onClosed: handleCreateTask,
   });
 
-  function onCreateTask(newTask: TaskItem) {
-    console.log('onCreateTask', newTask);
+  function handleCreateTask(newTask: TaskItem) {
+    console.log('handleCreateTask', newTask);
+  }
+
+  function handleEditTask(taskId: number) {
+    console.log('handleEditTask', taskId);
+  }
+
+  function handleDeleteTask(taskId: number) {
+    console.log('handleDeleteTask', taskId);
   }
 
   return (
@@ -25,9 +34,11 @@ export default function TaskPage() {
             Refresh
           </button>
         </div>
-        <TaskTable data={data} />
+        <TaskTable data={data} onEdit={handleEditTask} onDelete={handleDeleteTask} />
       </ContentLayout>
-      <AddTaskFormModal form={addTaskForm} modal={addTaskModal} />
+      <ConfirmModal {...addTaskModal.attach()}>
+        <AddTaskForm form={addTaskForm} />
+      </ConfirmModal>
     </>
   );
 }

@@ -7,7 +7,13 @@ export type UseConfirmModalReturn = {
   show: () => void;
 };
 
-export function useConfirmModal(options: { onClosed: (result: any) => void }) {
+export type UseConfirmModalOptions = {
+  title?: string;
+  onClosed: (result: any) => void;
+};
+
+export function useConfirmModal(options: UseConfirmModalOptions) {
+  const title = options.title;
   const [isShow, setIsShow] = useState(false);
   const handleShow = () => setIsShow(true);
   const handleClose = (value: any = false) => {
@@ -16,12 +22,13 @@ export function useConfirmModal(options: { onClosed: (result: any) => void }) {
   };
 
   const attach = () => {
-    return { isShow, handleClose } as ConfirmModalProps;
+    return { title, isShow, handleClose } as ConfirmModalProps;
   };
   return { attach, close: handleClose, show: handleShow } as UseConfirmModalReturn;
 }
 
 type ConfirmModalProps = PropsWithChildren<{
+  title?: string;
   isShow: boolean;
   handleClose: (value?: any) => void;
 }>;
@@ -30,7 +37,7 @@ export function ConfirmModal(props: ConfirmModalProps) {
   return (
     <Modal show={props.isShow} onHide={() => props.handleClose(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>New Task</Modal.Title>
+        <Modal.Title>{props.title ?? 'Confirmation'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{props.children}</Modal.Body>
       <Modal.Footer>

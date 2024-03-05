@@ -1,18 +1,28 @@
-import { useGetTasksApi } from '../../apis/tasks.api';
+import { taskRoute } from '../../apis/tasks.api';
 import ContentLayout from '../../layout/ContentLayout';
 import { TaskItem } from '../../models/task.model';
 import TaskTable from './components/TaskTable';
 import AddTaskForm, { useAddTaskFormModal } from './components/AddTaskForm';
 import { ConfirmModal } from '../../components/ConfirmModal';
+import httpClient from '../../utils/httpClient';
+import { useDataApi } from '../../apis/common/useData';
 
 export default function TaskPage() {
-  const [{ data, isError, isLoading }, taskRefresh] = useGetTasksApi();
+  const { data, isError, isLoading, refetch } = useDataApi<TaskItem[]>(taskRoute);
   const [addTaskForm, addTaskModal] = useAddTaskFormModal({
     onClosed: handleCreateTask,
   });
 
   function handleCreateTask(newTask: TaskItem) {
-    console.log('handleCreateTask', newTask);
+    httpClient
+      .post<TaskItem>('/tasks', newTask)
+      .then((resp) => {
+        refetch();
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   function handleEditTask(taskId: number) {
@@ -29,7 +39,7 @@ export default function TaskPage() {
         <button disabled={isLoading} type="button" className="btn btn-primary me-3" onClick={() => addTaskModal.show()}>
           Add Task
         </button>
-        <button disabled={isLoading} type="button" className="btn btn-link" onClick={() => taskRefresh()}>
+        <button disabled={isLoading} type="button" className="btn btn-link" onClick={() => refetch()}>
           Refresh
         </button>
       </div>

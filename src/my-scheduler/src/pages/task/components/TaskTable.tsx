@@ -7,7 +7,7 @@ type Props = {
   onDelete: (itemId: number) => void;
 };
 
-export default function TaskTable({ data, onEdit, onDelete }: Props) {
+export default function TaskTable({ data, onEdit, onDelete }: Readonly<Props>) {
   return (
     <Table striped bordered hover>
       <thead>
